@@ -185,8 +185,97 @@ public class BasicController {
 > 실제 서비스를 개발하다 보면 escape를 사용하지 않아서 HTML이 정상 렌더링 되지 않는 수 많은 문제가 발생한다.
 > escape를 기본으로 하고, 꼭 필요할 때만 unescape를 사용하자.
 
-
 ## 변수 - SpringEL
+타임 리프에서 변수를 사용할 때는 변수 표현식을 사용한다. `${...}`
+
+그리고 이 변수 표현식에는 SpringEL 이라는 스프링이 제공하는 표현식을 사용할 수 있다.
+
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+    @Getter @Setter
+    static class User {
+        private String username;
+        private int age;
+
+        public User(String username, int age) {
+            this.username = username;
+            this.age = age;
+        }
+    }
+
+    @GetMapping("/variable")
+    public String variable(Model model) {
+        User userA = new User("userA", 10);
+        User userB = new User("userB", 20);
+
+        List<User> list = new ArrayList<>();
+        list.add(userA);
+        list.add(userB);
+
+        Map<String, User> map = new HashMap<>();
+        map.put("userA", userA);
+        map.put("userB", userB);
+
+        model.addAttribute("user", userA);
+        model.addAttribute("users", list);
+        model.addAttribute("userMap", map);
+
+        return "basic/variable";
+    }
+}
+```
+
+### variable.html
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>SpringEL 표현식</h1>
+<ul> Object
+    <li>${user.username} = <span th:text="${user.username}"></span></li>
+    <li>${user['username']} = <span th:text="${user['username']}"></span></li>
+    <li>${user.getUsername()} = <span th:text="${user.getUsername()}"></span></li>
+</ul>
+
+<ul> List
+    <li>${users[0].username} = <span th:text="${users[0].username}"></span></li>
+    <li>${users[0]['username']} = <span th:text="${users[0]['username']}"></span></li>
+    <li>${users[0].getUsername()} = <span th:text="${users[0].getUsername()}"></span></li>
+</ul>
+
+<ul> Map
+    <li>${userMap['userA'].username} = <span th:text="${userMap['userA'].username}"></span></li>
+    <li>${userMap['userA']['username']} = <span th:text="${userMap['userA']['username']}"></span></li>
+    <li>${userMap['userA'].getUsername()} = <span th:text="${userMap['userA'].getUsername()}"></span></li>
+</ul>
+</body>
+</html>
+```
+
+### 지역 변수 선언 - th:with
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1> 지역 변수 - {th:with} </h1>
+    <div th:with="first=${users[0]}">
+        <p>처음 사람의 이름은 <span th:text="${first.username}"></span></p>
+    </div>
+</body>
+</html>
+```
+
 
 ## 기본 객체들
 
