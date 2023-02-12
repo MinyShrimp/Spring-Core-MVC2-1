@@ -3,7 +3,7 @@
 * 깃헙
   * https://github.com/MinyShrimp/Spring-Core-MVC2-1
 
-## (타임리프 - 기본 기능)[./강의/1강]
+## [타임리프 - 기본 기능](./강의/1강)
 * 프로젝트 생성
 * 타임리프 소개
 * 텍스트 - text, utext
