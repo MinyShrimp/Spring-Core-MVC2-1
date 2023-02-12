@@ -276,8 +276,71 @@ public class BasicController {
 </html>
 ```
 
-
 ## 기본 객체들
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+    @Component("helloBean")
+    static class HelloBean {
+        public String hello(String data) {
+            return "Hello " + data;
+        }
+    }
+
+    @GetMapping("/basic-objects")
+    public String basicObjects(
+            Model model,
+            HttpServletRequest req,
+            HttpServletResponse resp,
+            HttpSession session
+    ) {
+        session.setAttribute("sessionData", "Hello Session");
+        model.addAttribute("request", req);
+        model.addAttribute("response", resp);
+        model.addAttribute("servletContext", req.getServletContext());
+        return "basic/basic-objects";
+    }
+}
+```
+
+### basic-objects.html
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>식 기본 객체 (Expression Basic Object)</h1>
+    <ul>
+        <li>request = <span th:text="${request}"></span></li>
+        <li>response = <span th:text="${response}"></span></li>
+        <li>session = <span th:text="${session}"></span></li>
+        <li>servletContext = <span th:text="${servletContext}"></span></li>
+        <li>locale = <span th:text="${#locale}"></span></li>
+    </ul>
+
+    <h1>편의 객체</h1>
+    <ul>
+        <li>Request Parameter = <span th:text="${param.paramData}"></span></li>
+        <li>session = <span th:text="${session.sessionData}"></span></li>
+        <li>spring bean = <span th:text="${@helloBean.hello('Spring!')}"></span></li>
+    </ul>
+</body>
+</html>
+```
+
+### 편의 객체들
+* HTTP 요청 파라미터 접근: `param` 
+  * `${param.paramData}`
+* HTTP 세션 접근: `session`
+  * `${session.sessionData}`
+* 스프링 빈 접근: `@`
+  * `${@helloBean.hello('Spring')}`
+* 국가: `${#locale}`
 
 ## 유틸리티 객체와 날짜
 

@@ -1,7 +1,11 @@
 package hello.springcoremvc21.basic;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -56,5 +60,26 @@ public class BasicController {
         model.addAttribute("userMap", map);
 
         return "basic/variable";
+    }
+
+    @Component("helloBean")
+    static class HelloBean {
+        public String hello(String data) {
+            return "Hello " + data;
+        }
+    }
+
+    @GetMapping("/basic-objects")
+    public String basicObjects(
+            Model model,
+            HttpServletRequest req,
+            HttpServletResponse resp,
+            HttpSession session
+    ) {
+        session.setAttribute("sessionData", "Hello Session");
+        model.addAttribute("request", req);
+        model.addAttribute("response", resp);
+        model.addAttribute("servletContext", req.getServletContext());
+        return "basic/basic-objects";
     }
 }
