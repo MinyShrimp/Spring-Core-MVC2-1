@@ -1096,6 +1096,61 @@ public class TemplateController {
 * 파라미터를 누락하면, 예외를 던진다.
 
 ## 템플릿 레이아웃 1
+코드 조각을 레이아웃에 넘겨서 사용하는 방법에 알아보자.
+
+### TemplateController
+```java
+@Controller
+@RequestMapping("/template")
+public class TemplateController {
+    @GetMapping("/layout")
+    public String layout() {
+        return "template/layout/layoutMain";
+    }
+}
+```
+
+### base.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="common_header(title,links)">
+    <title th:replace="${title}">레이아웃 타이틀</title>
+
+    <!-- 공통 -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/awesomeapp.css}">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+    <script type="text/javascript" th:src="@{/sh/scripts/codebase.js}"></script>
+
+    <!-- 추가 -->
+    <th:block th:replace="${links}"></th:block>
+</head>
+</html>
+```
+
+### layoutMain.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{template/layout/base :: common_header(~{::title}, ~{::link})}">
+    <title>메인 타이틀</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/themes/smoothness/jquery-ui.css}">
+</head>
+<body>
+    메인 컨텐츠
+</body>
+</html>
+```
+
+### 결과
+![img_5.png](img_5.png)
+
+### 핵심
+* `common_header(~{::title}, ~{::link})`
+* `~{::title}`: 현재 페이지의 모든 title 태그를 전달한다.
+* `~{::link}`: 현재 페이지의 모든 link 태그를 전달한다.
+* 하위 태그가 아닌, 현재 페이지의 모든 태그를 묶어서 가져간다. 
 
 ## 템플릿 레이아웃 2
 
