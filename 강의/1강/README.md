@@ -833,6 +833,59 @@ public class BasicController {
 ```
 
 ## 주석
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+  @GetMapping("comments")
+  public String comments(Model model) {
+    model.addAttribute("data", "Spring");
+    return "basic/comments";
+  }
+}
+```
+
+### condition.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>예시</h1>
+    <span th:text="${data}"> html data </span>
+
+    <h1>1. 표준 HTML 주석</h1>
+    <!--
+    <span th:text="${data}"> html data </span>
+    -->
+
+    <h1>2. 타임리프 파서 주석</h1>
+    <!--/* [[${data}]] */-->
+    <!--/*-->
+    <span th:text="${data}"> html data </span>
+    <!--*/-->
+
+    <h1>3. 타임리프 프로토타입 주석</h1>
+    <!--/*/
+    <span th:text="${data}"> html data </span>
+    /*/-->
+</body>
+</html>
+```
+
+* 표준 HTML 주석
+  * `<!-- -->`
+  * 타임리프를 통해 출력해도 그대로 남겨둔다.
+* 타임리프 파서 주석
+  * `<!--/* */-->`
+  * 타임리프를 통해 출력하면 주석 부분을 제거한다.
+* 타임리프 프로토타입 주석
+  * `<!--/*/ /*/-->`
+  * 타임리프를 통해 출력하면 주석을 하지 않고 정상 렌더링 된다.
 
 ## 블록
 
