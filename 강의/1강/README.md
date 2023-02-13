@@ -927,6 +927,88 @@ public class BasicController {
 위처럼 사용하기 애매한 경우에 사용하면 된다. `<th:block>`은 렌더링시 제거된다.
 
 ## 자바스크립트 인라인
+타임리프는 자바스크립트에서 타임리프를 편리하게 사용할 수 있는 자바스크립트 인라인 기능을 제공한다.
+자바스크립트 인라인 기능은 다음과 같이 적용하면 된다.
+
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+  private List<User> addUsers() {
+    List<User> list = new ArrayList<>();
+    list.add(new User("userA", 10));
+    list.add(new User("userB", 20));
+    list.add(new User("userC", 30));
+    return list;
+  }
+  
+  @GetMapping("javascript")
+  public String javascript(Model model) {
+    model.addAttribute("user", new User("userA", 10));
+    model.addAttribute("users", addUsers());
+    return "basic/javascript";
+  }
+}
+```
+
+### javascript.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        var username = [[${user.username}]];
+        var age = [[${user.age}]];
+
+        var username2 = /*[[${user.username}]]*/ "test username";
+
+        var user = [[${user}]];
+    </script>
+
+    <script th:inline="javascript">
+        var username = [[${user.username}]];
+        var age = [[${user.age}]];
+
+        var username2 = /*[[${user.username}]]*/ "test username";
+
+        var user = [[${user}]];
+    </script>
+</body>
+</html>
+```
+
+### 결과
+![img_2.png](img_2.png)
+
+### 텍스트 렌더링
+* `var username = [[${user.username}]];`
+  * 인라인 사용 전 : `var username = userA`
+  * 인라인 사용 후 : `var username = "userA"`
+
+### 자바스크립트 내추럴 템플릿
+* `var username2 = /*[[${user.username}]]*/ "test username"`
+  * 인라인 사용 전 : `var username2 = /*userA*/ "test username"`
+  * 인라인 사용 후 : `var username2 = "userA"`
+
+### 객체
+* `var user = [[${user}]];`
+  * 인라인 사용 전 : `var user = hello.springcoremvc21.basic.BasicController$User@60b06d2;`
+  * 인라인 사용 후 : `var user = {"username":"userA","age":10}`
+
+### 자바스크립트 인라인 each
+```html
+<script th:inline="javascript">
+    [# th:each="user, stat : ${users}"]
+    var user[[${stat.count}]] = [[${user}]];
+    [/]
+</script>
+```
+![img_3.png](img_3.png)
 
 ## 템플릿 조각
 
