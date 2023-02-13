@@ -490,6 +490,53 @@ public class BasicController {
 그 결과, 외부에서 사용된 param1은 쿼리 파라미터에 포함되지 않게 되고 param2만 파라미터에 사용되어진다. 
 
 ## 리터럴
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+  @GetMapping("literal")
+  public String literal(Model model) {
+    model.addAttribute("data", "Spring!");
+    return "basic/literal";
+  }
+}
+```
+
+### literal.html
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>리터럴</h1>
+    <ul>
+        <li>
+            'hello' + ' world!' =
+            <span th:text="'hello' + ' world!'"></span>
+        </li>
+        <li>
+            'hello world!' =
+            <span th:text="'hello world!'"></span>
+        </li>
+        <li>
+            'hello ' + ${data} = 
+            <span th:text="'hello ' + ${data}"></span>
+        </li>
+        <li>
+            리터럴 대체 |hello ${data}| =
+            <span th:text="|hello ${data}|"></span>
+        </li>
+    </ul>
+</body>
+</html>
+```
+
+### Literal Substitutions
+`<span th:text="|hello ${data}|"`
 
 ## 연산
 
