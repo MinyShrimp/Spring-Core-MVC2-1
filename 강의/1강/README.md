@@ -1011,6 +1011,89 @@ public class BasicController {
 ![img_3.png](img_3.png)
 
 ## 템플릿 조각
+웹페이지를 개발할 때는 공통 영역이 많이 있다.
+Header, Footer, Nav, ...
+이런 부분을 코드를 복사해서 사용한다면 변경시 여러 페이지를 다 수정해야 하므로 상당히 비효율적이다.
+타임리프는 이런 문제를 해결하기 위해 템플릿 조각과 레이아웃 기능을 지원한다.
+
+### TemplateController
+```java
+@Controller
+@RequestMapping("/template")
+public class TemplateController {
+    @GetMapping("/fragment")
+    public String template() {
+        return "template/fragment/fragmentMain";
+    }
+}
+```
+
+### footer.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <footer th:fragment="copy">
+        푸터 자리입니다.
+    </footer>
+
+    <footer th:fragment="copyParam (param1, param2)">
+        <p>파라미터 자리입니다.</p>
+        <p th:text="${param1}"></p>
+        <p th:text="${param2}"></p>
+    </footer>
+</body>
+</html>
+```
+
+### fragmentMain.html
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>부분 포함</h1>
+    <h2>부분 포함 insert</h2>
+    <div th:insert="~{template/fragment/footer :: copy}"></div>
+
+    <h2>부분 포함 replace</h2>
+    <div th:replace="~{template/fragment/footer :: copy}"></div>
+
+    <h2>부분 포함 단순 표현식</h2>
+    <div th:replace="template/fragment/footer :: copy"></div>
+
+    <h2>파라미터 사용</h2>
+    <div th:replace="~{template/fragment/footer :: copyParam('데이터1', '데이터2')}"></div>
+</body>
+</html>
+```
+
+### 결과
+![img_4.png](img_4.png)
+
+### insert
+* `<div th:insert="~{template/fragment/footer :: copy}"></div>`
+* `<div> <footer> 푸터 자리입니다. </footer> </div>`
+* div 태그 내에 포함된다.
+
+### replace
+* `<div th:replace="~{template/fragment/footer :: copy}"></div>`
+* `<footer> 푸터 자리입니다. </footer>`
+* div 태그를 없애고 그 자리에 대체한다.
+
+### replace 단순 표현식
+* `<div th:replace="template/fragment/footer :: copy"></div>`
+* 로직이 없고 단순 경로만으로 사용할 수 있으면, `~{}`를 제거해도 된다.
+* 다만, 사용하면 로그 상에 미래의 버전에서는 삭제될 예정이라 사용하지 말라고 경고를 남긴다.
+  * `The old, unwrapped syntax for fragment expressions will be removed in future versions of Thymeleaf.`
+
+### 파라미터 사용
+* `<div th:replace="~{template/fragment/footer :: copyParam('데이터1', '데이터2')}"></div>`
+* 템플릿에 파라미터를 담아서 보낼 수 있다. `~{}` 생략이 불가능하다.
+* 파라미터를 누락하면, 예외를 던진다.
 
 ## 템플릿 레이아웃 1
 
