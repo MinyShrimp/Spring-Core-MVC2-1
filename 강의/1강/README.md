@@ -677,6 +677,90 @@ public class BasicController {
 ```
 
 ## 반복
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+  private List<User> addUsers() {
+    List<User> list = new ArrayList<>();
+    list.add(new User("userA", 10));
+    list.add(new User("userB", 20));
+    list.add(new User("userC", 30));
+    return list;
+  }
+
+  @GetMapping("/each")
+  public String each(Model model) {
+    model.addAttribute("users", addUsers());
+    return "basic/each";
+  }
+}
+```
+
+### each.html
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>기본 테이블</h1>
+    <table border="1 solid black">
+        <tr>
+            <th>username</th>
+            <th>age</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.age}"></td>
+        </tr>
+    </table>
+
+    <h1>반복 상태 유지</h1>
+    <table border="1 solid black">
+        <tr>
+            <th>count</th>
+            <th>username</th>
+            <th>age</th>
+            <th>etc</th>
+        </tr>
+        <tr th:each="user, userStat : ${users}">
+            <td th:text="${userStat.count}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.age}"></td>
+            <td>
+                index = <span th:text="${userStat.index}"></span>    <br />
+                count = <span th:text="${userStat.count}"></span>    <br />
+                size  = <span th:text="${userStat.size}"></span>     <br />
+                even  = <span th:text="${userStat.even}"></span>     <br />
+                odd   = <span th:text="${userStat.odd}"></span>      <br />
+                first = <span th:text="${userStat.first}"></span>    <br />
+                last  = <span th:text="${userStat.last}"></span>     <br />
+                current = <span th:text="${userStat.current}"></span><br />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+```
+
+### 반복 기능
+* `th:each="user : ${users}"`
+* `List`뿐만 아니라, `Set`, `Map`도 가능
+
+### 반복 상태
+* `th:each="user, userStat : ${users}"`
+* 현재 반복 중인 상태를 확인할 수 있는 변수
+* 두번째 파라미터는 생략할 수 있는데, 생략할 경우 지정한 변수명(`user`) + `Stat`이 붙는다.
+* `index`: 0부터 시작
+* `count`: 1부터 시작
+* `size`: 전체 사이즈
+* `even`, `odd`: 홀수, 짝수 여부 (`boolean`)
+* `first`, `last`: 처음, 마지막 여부 (`boolean`)
+* `current`: 현재 객체
 
 ## 조건부 평가
 

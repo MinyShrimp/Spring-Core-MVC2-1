@@ -97,21 +97,35 @@ public class BasicController {
         return "basic/link";
     }
 
-    @GetMapping("literal")
+    @GetMapping("/literal")
     public String literal(Model model) {
         model.addAttribute("data", "Spring!");
         return "basic/literal";
     }
 
-    @GetMapping("operation")
+    @GetMapping("/operation")
     public String operation(Model model) {
         model.addAttribute("nullData", null);
         model.addAttribute("data", "Spring");
         return "basic/operation";
     }
 
-    @GetMapping("attribute")
+    @GetMapping("/attribute")
     public String attribute() {
         return "basic/attribute";
+    }
+
+    private List<User> addUsers() {
+        List<User> list = new ArrayList<>();
+        list.add(new User("userA", 10));
+        list.add(new User("userB", 20));
+        list.add(new User("userC", 30));
+        return list;
+    }
+
+    @GetMapping("/each")
+    public String each(Model model) {
+        model.addAttribute("users", addUsers());
+        return "basic/each";
     }
 }
