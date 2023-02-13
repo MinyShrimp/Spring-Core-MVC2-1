@@ -1153,6 +1153,62 @@ public class TemplateController {
 * 하위 태그가 아닌, 현재 페이지의 모든 태그를 묶어서 가져간다. 
 
 ## 템플릿 레이아웃 2
+### TemplateController
+```java
+@Controller
+@RequestMapping("/template")
+public class TemplateController {
+    @GetMapping("/layoutExtend")
+    public String layoutExtends() {
+        return "template/layoutExtend/layoutExtendMain";
+    }
+}
+```
+
+### layoutFile
+```html
+<!DOCTYPE html>
+<html
+    th:fragment="layout (title, content)"
+    xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title th:replace="${title}">레이아웃 타이틀</title>
+</head>
+<body>
+    <h1>레이아웃 H1</h1>
+    <div th:replace="${content}">
+        <p>레이아웃 컨텐츠</p>
+    </div>
+    <footer>
+        레이아웃 푸터
+    </footer>
+</body>
+</html>
+```
+
+### layoutExtendMain
+```html
+<!DOCTYPE html>
+<html 
+    th:replace="~{template/layoutExtend/layoutFile :: layout(~{::title}, ~{::section})}"
+    xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <section>
+        <p>메인 페이지 컨텐츠</p>
+        <div>메인 페이지 포함 내용</div>
+    </section>
+</body>
+</html>
+```
+
+### 결과
+![img_6.png](img_6.png)
 
 ## 정리
 
