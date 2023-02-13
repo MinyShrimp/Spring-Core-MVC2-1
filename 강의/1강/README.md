@@ -617,6 +617,64 @@ public class BasicController {
 ```
 
 ## 속성 값 설정
+### BasicController
+```java
+@Controller
+@RequestMapping("/basic")
+public class BasicController {
+  @GetMapping("attribute")
+  public String attribute() {
+    return "basic/attribute";
+  }
+}
+```
+
+### attribute.html
+```html
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"></html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>속성 설정</h1>
+    <input type="text" name="mock" th:name="userA">
+
+    <h1>속성 추가</h1>
+    <ul>
+        <li>
+            th:attrappend = 
+            <input type="text" class="text" th:attrappend="class= large"> <br/>
+        </li>
+        <li>
+            th:attrprepend =
+            <input type="text" class="text" th:attrprepend="class=large "> <br/>
+        </li>
+        <li>
+            th:classappend =
+            <input type="text" class="text" th:classappend="large"> <br/>
+        </li>
+    </ul>
+
+    <h1>checked 처리</h1>
+    <ul>
+        <li>
+            checked o
+            <input type="checkbox" name="active" th:checked="true"> <br/>
+        </li>
+        <li>
+            checked o
+            <input type="checkbox" name="active" th:checked="false"> <br/>
+        </li>
+        <li>
+            checked = false
+            <input type="checkbox" name="active" checked="false"> <br/>
+        </li>
+    </ul>
+</body>
+</html>
+```
 
 ## 반복
 
