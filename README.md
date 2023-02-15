@@ -3,6 +3,7 @@
 * 깃헙
   * https://github.com/MinyShrimp/Spring-Core-MVC2-1
   * https://github.com/MinyShrimp/Spring-Core-MVC2-2
+  * https://github.com/MinyShrimp/Spring-Core-MVC2-6
 
 ## [타임리프 - 기본 기능](./강의/1강)
 * 프로젝트 생성
