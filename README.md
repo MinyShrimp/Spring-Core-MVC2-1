@@ -6,6 +6,7 @@
   * https://github.com/MinyShrimp/Spring-Core-MVC2-6
   * https://github.com/MinyShrimp/Spring-Core-MVC2-8
   * https://github.com/MinyShrimp/Spring-Core-MVC2-10
+  * https://github.com/MinyShrimp/Spring-Core-MVC2-11
 
 ## [타임리프 - 기본 기능](./강의/1강)
 * 프로젝트 생성
